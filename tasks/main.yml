@@ -1,7 +1,8 @@
 ---
 # tasks file for nginx
 - name: install nginx
-  apt: name=nginx state=present 
+  package: name=nginx state=present 
+  become: yes
 
 - name: Modify conf
   template: src="nginx.conf.j2" dest="/etc/nginx/nginx.conf"
