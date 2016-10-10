@@ -1,5 +1,6 @@
 - hosts: all
   vars:
   - server_domain: 2m.io
+  - web_directory: /var/www
   roles:
   - ansible-role-single-nginx-site
