@@ -17,6 +17,7 @@ See Also:
 
 Available variables are listed below:
 
+    - server_domain: hostname.com
 
 ## Dependencies
 
@@ -25,6 +26,8 @@ None
 ## Example Playbook
 
     - hosts: webservers
+      vars: 
+      - server_domain: hostname.com
       roles:
       - ansible-role-single-nginx-site
 
