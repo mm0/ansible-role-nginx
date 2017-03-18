@@ -9,48 +9,9 @@ events {
     worker_connections  1024;
 }
 http {
-    include /etc/nginx/sites-enabled/*;
     include       /etc/nginx/mime.types;
     default_type  application/octet-stream;
     merge_slashes off;
-
-    log_format  main  '$remote_addr - $remote_user [$time_local] "$request" '
-                      '$status $body_bytes_sent "$http_referer" '
-                      '"$http_user_agent" "$http_x_forwarded_for"';
-
-    access_log  /var/log/nginx/access.log  main;
-
-    sendfile        on;
-    #tcp_nopush     on;
-
-    keepalive_timeout  65;
-    client_max_body_size 5m;
-
-
-    upstream my_site {
-      server 127.0.0.1:8080;
-    }
-
-    include /etc/nginx/conf.d/*.conf;
-
-
-    server {
-        listen  80;
-        server_name {{ server_domain }};
-        access_log /var/log/nginx/{{ server_domain }}.log;
-        rewrite ^/index.html / permanent;
-        return 301 https://$server_name$request_uri;
-    }
-    server {
-        listen  80;
-        server_name {{ server_domain | replace ("www.","") }};
-        access_log /var/log/nginx/site.log;
-        return 301 https://www.$server_name$request_uri;
-    }
-    # used for letsencrypt webroot authentication
-    location ~* \/\.well-known\/acme-challenge\/.*$ {
-        root /var/www/public/;
-    }
     gzip on;
     gzip_http_version 1.1;
     gzip_comp_level 2;
@@ -58,6 +19,19 @@ http {
     application/x-javascript text/xml
     application/xml application/xml+rss
     text/javascript;
+    log_format  main  '$remote_addr - $remote_user [$time_local] "$request" '
+                      '$status $body_bytes_sent "$http_referer" '
+                      '"$http_user_agent" "$http_x_forwarded_for"';
 
+    access_log  /var/log/nginx/access.log  main;
+    sendfile        on;
+    #tcp_nopush     on;
+    keepalive_timeout  65;
+    client_max_body_size 5m;
+    upstream my_site {
+      server 127.0.0.1:8080;
+    }
+    include /etc/nginx/conf.d/*.conf;
+    include /etc/nginx/sites-enabled/*;
 }
 
