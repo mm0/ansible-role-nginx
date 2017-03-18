@@ -6,6 +6,9 @@ Ansible Role: Single-Nginx-Site v1.0
 
 An Ansible role that install nginx and sets up a single vhost
 
+The role automaticall sets up HTTP -> HTTPS redirects and creates HTTPS Listeners for naked domain and www.subdomain
+
+Keys are required for SSL configuration by specifying the paths
 
 Requirements
 --
@@ -19,6 +22,12 @@ Role Variables
 Available variables are listed below:
 ```yml
 - server_domain: hostname.com
+naked_domain_keys:
+  private: /etc/letsencrypt/live/2m.io/privkey.pem;
+  fullchain: /etc/letsencrypt/live/2m.io/fullchain.pem;
+www_domain_keys:
+  private: /etc/letsencrypt/live/dev.2m.io/privkey.pem;
+  fullchain: /etc/letsencrypt/live/dev.2m.io/fullchain.pem;
 ```
 
 Dependencies
